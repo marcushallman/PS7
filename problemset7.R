@@ -37,4 +37,22 @@ robbery_district
 # District 5 has the most robberies per crime
 
 # problem 5
+daily_crimes <- crime_data %>%
+  mutate(date = substr(as.character(crime_data$DateOccur), 0, 10)) %>%
+  mutate(date2 = as.Date.character(date, "%m/%d/%Y")) %>%
+  group_by(date2) %>%
+  summarise(count = n()) %>%
+  filter (date2 > "2017-12-31")
+
+ggplot(data = daily_crimes, aes(date2, count)) +  geom_line(position = "dodge") + xlab("Date") + ylab("Daily Crimes") +  ggtitle ("Daily Crime Over Time") +  theme(plot.title = element_text(hjust = 0.5))
+
+# problem 6
+daily_crimes2 <- crime_data %>%
+  mutate(date = substr(as.character(crime_data$DateOccur), 0, 10)) %>%
+  mutate(date2 = as.Date.character(date, "%m/%d/%Y")) %>%
+  group_by(date2, District) %>%
+  summarise(count = n()) %>%
+  filter (date2 > "2017-12-31") 
+
+ggplot(data = daily_crimes2, aes(date2, count)) +  geom_line(aes(color = as.character(District))) +  xlab("Date") + ylab("Daily Crimes") +  ggtitle("Crimes per Day per District") + theme(plot.title = element_text(hjust = 0.1)) +  scale_color_discrete(name = "Districts")
 
